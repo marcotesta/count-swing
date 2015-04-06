@@ -1,4 +1,4 @@
-package it.mondogrua.pwf.count.pdc;
+package it.mondogrua.counts;
 
 import java.util.Observable;
 
@@ -18,7 +18,7 @@ public abstract class Count extends Observable {
 	public void setValue(Object aValue) {
 		_value = aValue;
 		setChanged();
-		notifyObservers("getValueAsString");
+		notifyObservers("getValue");
 		clearChanged();
 	}
 
@@ -37,7 +37,5 @@ public abstract class Count extends Observable {
 	abstract public void increment();
 	
 	abstract public void decrement();
-
-	abstract public String getValueAsString();
 
 }

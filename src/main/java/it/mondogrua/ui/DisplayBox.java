@@ -5,40 +5,33 @@ import java.lang.reflect.Method;
 import java.util.Observable;
 import java.util.Observer;
 
-import javax.swing.JFrame;
-import javax.swing.JTextField;
+import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 
-public class DisplayBox implements Observer {
+@SuppressWarnings("serial")
+public class DisplayBox extends JLabel implements Observer {
 
-	private final JTextField text;
-	
 	public DisplayBox(Observable count, String action) {
 		count.addObserver(this);
-		text = new JTextField(10);
-		setContent(getContent(count, action));
-	}
-
-	public void addTo(JFrame frame) {
-		frame.add(text);
-	}
-
-	public void setContent(final String value) {
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				text.setText(value);
-			}
-		});
+		setContent(getContentFrom(count, action));
 	}
 
 	@Override  // Observer
-	public void update(Observable observable, Object arg) {
-		setContent(getContent(observable, (String) arg));
+	public void update(Observable observable, Object action) {
+		setContent(getContentFrom(observable, (String) action));
 	}
 	
 	// Private Methods --------------------------------------------------------
+
+	private void setContent(String value) {
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				setText(value);
+			}
+		});
+	}
 	
-	private String getContent(Object model, String action) {
+	private String getContentFrom(Object model, String action) {
 		
 		Method method;
 		try {
